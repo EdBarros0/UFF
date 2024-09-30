@@ -18,6 +18,16 @@ Lista* inserirFinal(Lista *l, int x){
     }
 }
 
+void printLista(Lista* l){
+    if(l == NULL){
+        return;
+    }
+    else{
+        printf("%d ", l->info);
+        printLista(l->prox);
+    }
+}
+
 int somaElementos(Lista *l){
     if(l==NULL){
         return 0;
@@ -32,12 +42,25 @@ int contElemento(Lista *l, int x){
         return 0;
     }else{
         if(l->info == x){
-            return contElemento(l->prox, x) + 1;;
+            return contElemento(l->prox, x) + 1;
         }else{
             return contElemento(l->prox, x);
         }
     }
 }
+
+Lista* removeElemento(Lista* l, int x){
+    if(l != NULL){
+        if(l->info == x){
+            l->prox = removeElemento(l->prox, x);
+            return l->prox;
+        }else{
+            l->prox = removeElemento(l->prox, x);
+            return l;
+        }
+    }
+}
+
 
 int main()
 {
@@ -50,6 +73,10 @@ int main()
     l = inserirFinal(l, 9);
     printf("\n %d", somaElementos(l));
     printf("\n %d", contElemento(l, 9));
+    l = removeElemento(l, 9);
+    printf("\n");
+    printLista(l);
+
 
     return 0;
 }
