@@ -1,2 +1,2 @@
 # UFF
-Repositorio com Exercicios projetos feitos na UFF
+Repositorio com Exercicios e projetos feitos na UFF
