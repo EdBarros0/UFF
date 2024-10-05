@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+
 
 typedef struct arvore{  //Estrutura da Arvore
     int info;
@@ -79,7 +81,7 @@ void ImpFolhas(arvore* a){    //Função que imprime as folhas da arvore
         ImpFolhas(a->dir);
     }
 }
-int main()
+int main()  //Main
 {
     arvore* a = (arvore*)malloc(sizeof(arvore)); //Cria uma estrutura(arvore) com o nome "a"
     int menu = 0;
@@ -92,10 +94,17 @@ int main()
 
         if(menu == 1){  //Leitura da arvore
             printf("\x1B[2J\x1b[H");  //Limpa a tela
-            FILE* arq = fopen("Arvore.txt", "rt");  // Abre o arquivo no modo leitura
+            printf("Digite o nome do arquivo que deseja ler: ");
+            char string[100]; //Cria uma string de tamanho 100 para colocar o nome do arquivo que contem a arvore
+            scanf("%s",string);  //Digita o nome do arquivo contendo seu tipo(".txt", ".docs", etc) 
+            FILE* arq = fopen(string, "rt"); // Abre o arquivo no modo leitura
+            if(arq == NULL){ //Verifica a integridade do arquivo
+                printf("Impossivel Ler o Arquivo!!\n"); //Diz que não foi possivel ler o arquivo caso o arquivo seja NULL
+                return -1;  //Fecha o programa
+            }  
             a = LerArvore(arq);   //Chama a função para ler o arquivo e armazena na estrutura(arvore) "a"
             fclose(arq); //Fecha o arquivo, pois ja foi usado
-            printf("Arquivo Lido com sucesso!\n\n");  //Mostra na tela que foi possivel ler o arquivo com succeso
+            printf("\n\nArquivo Lido com sucesso!\n\n");  //Mostra na tela que foi possivel ler o arquivo com succeso
             printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
