@@ -141,7 +141,7 @@ int main()  //Main
             printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
-        if(menu == 4){  //Conta quantos elementos tem na arvore
+        if(menu == 4){  //Conta quantos elementos tem na arvore.
             printf("\x1B[2J\x1b[H");  //Limpa a tela
             printf("A arvore tem %d elementos!", ContElementos(a));  //Usa a funcao para contar quantos elementos existem na arvore e imprime na tela
             printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
