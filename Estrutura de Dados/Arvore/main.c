@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <math.h>
 
 
 typedef struct arvore{  //Estrutura da Arvore
@@ -30,6 +31,17 @@ arvore* LerArvore(FILE* arq){  //Função De Leitura da Arvore(mesma função ex
     }
 }
 
+int AlturaArvore(arvore *a){
+    if(a == NULL)
+        return 0;
+    int tam_esq = AlturaArvore(a->esq);
+    int tam_dir = AlturaArvore(a->dir);
+    if(tam_esq > tam_dir)
+        return 1+tam_esq;
+    else   
+        return 1+tam_dir;
+}
+
 void ImpPreArvore(arvore* a){  //Impreção Pre-ordem da Arvore
     if(a != NULL){
         printf("%d ", a->info);  //Print antes de chamar a recursividade
@@ -51,6 +63,15 @@ void ImpPosArvore(arvore* a){  //Impreção Pos-ordem da Arvore
         ImpPosArvore(a->esq);
         ImpPosArvore(a->dir);
         printf("%d ", a->info);  //Print após a chamada da recursividade
+    }
+}
+
+void ImpNivelArvore(arvore * a, int cont, int n){
+    if(a != NULL){
+        if(cont == n)
+            printf("%d ", a->info);
+        ImpNivelArvore(a->esq,cont+1,n);
+        ImpNivelArvore(a->dir,cont+1,n);
     }
 }
 
@@ -81,15 +102,52 @@ void ImpFolhas(arvore* a){    //Função que imprime as folhas da arvore
         ImpFolhas(a->dir);
     }
 }
+
+int ArvBalanceada(arvore *a){
+    if(a == NULL){
+        return 0;
+    }
+    int esq = ArvBalanceada(a->esq);
+        if(esq == -1)
+            return -1;
+    int dir = ArvBalanceada(a->dir);
+        if(dir == -1)
+            return -1;
+    if(abs(esq - dir) > 1)
+        return -1;
+    else if(esq > dir)
+        return 1+esq;
+    else
+        return 1+dir;
+
+}
+int ArvoreCheia(arvore *a, int cont, int n){
+    if(a == NULL)
+        return 0;
+    int quant = ArvoreCheia(a->esq,cont+1,n) + ArvoreCheia(a->dir,cont+1,n);
+    if(cont == n)
+        return 1 + quant;
+    else
+        return quant;
+}
+void ImpNivelNo(arvore *a,int cont, int no){
+    if(a != NULL){
+        if(no == a->info){
+            printf("Existe esse noh no Nivel: %d\n", cont);
+        }
+        ImpNivelNo(a->esq,cont+1,no);
+        ImpNivelNo(a->dir,cont+1,no);
+    }
+}
 int main()  //Main
 {
     arvore* a = (arvore*)malloc(sizeof(arvore)); //Cria uma estrutura(arvore) com o nome "a"
     int menu = 0;
-    while (menu != 6) //Inicio do loop para manter o programa aberto e ser possivel fazer multiplas operação sem fecha-lo
+    while (menu != 9) //Inicio do loop para manter o programa aberto e ser possivel fazer multiplas operação sem fecha-lo
     {                 //Uso a propria variavel para a escolha de operação, o que vai me permitir controlar mais facil o fechamento da lista ao decorrer do programa
         printf("\x1B[2J\x1b[H");  //Comando que eu aprendi com um professor que tive aula na UFJF para limpar a tela
         printf("Oque Deseja Fazer?\n\n");
-        printf("1- Ler uma Arvore\n2- Imprimir Arvore\n3- Verificar Elemento\n4- Tamanho Da Arvore\n5- Imprimir Folhas\n6- Sair\n\nDigite Aqui: "); //Menu principal de escolha
+        printf("1- Ler uma Arvore\n2- Imprimir Arvore\n3- Verificar Elemento\n4- Tamanho Da Arvore\n5- Imprimir Folhas\n6- Verificar se a Arvore esta balanceada\n7- Verificar se a Arvore esta cheia\n8- Imprimir nivel de um noh\n9- Sair\n\nDigite Aqui: "); //Menu principal de escolha
         scanf("%d", &menu); //A leitura de numero mandara para o if correspondente a operação
 
         if(menu == 1){  //Leitura da arvore
@@ -105,14 +163,14 @@ int main()  //Main
             a = LerArvore(arq);   //Chama a função para ler o arquivo e armazena na estrutura(arvore) "a"
             fclose(arq); //Fecha o arquivo, pois ja foi usado
             printf("\n\nArquivo Lido com sucesso!\n\n");  //Mostra na tela que foi possivel ler o arquivo com succeso
-            printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
         if(menu == 2){  //Impreção da arvore
             int m;
             printf("\x1B[2J\x1b[H"); //Limpa a tela
             printf("Qual forma de impressão voce quer?\n\n"); 
-            printf("1- Pre-ordem \n2- Em-ordem \n3- Pos-ordem\n\nDigite Aqui: "); //Escolha de qual impressão voce quer
+            printf("1- Pre-ordem \n2- Em-ordem \n3- Pos-ordem\n4- Em Largura\n\nDigite Aqui: "); //Escolha de qual impressão voce quer
             scanf("%d", &m);
             printf("\x1B[2J\x1b[H"); //Limpa a tela
             if(m == 1){  //Imprime a arvore em Pre-ordem
@@ -124,8 +182,14 @@ int main()  //Main
             }else if(m == 3){  //Imprime a arvore em Pos-ordem
                 printf("Pos-Ordem:\n");
                 ImpPosArvore(a);
+            }else if(m == 4){
+                printf("Em Largura:\n");
+                for(int i=0;i<AlturaArvore(a);i++){
+                    ImpNivelArvore(a,0,i);
+                    printf("\n");
+                }
             }
-            printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
         if(menu == 3){  //Verifica se x elemento esta na arvore
@@ -138,22 +202,45 @@ int main()  //Main
                 printf("O elemento %d eh um no da arvore!", x); //Imprime uma mensagem dizendo que esta na arvore
             else
                 printf("O elemento %d nao esta presente na arvore!", x); //Se nao, imprime uma mensagem dizendo que nao foi encontrado na arvore
-            printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
         if(menu == 4){  //Conta quantos elementos tem na arvore.
             printf("\x1B[2J\x1b[H");  //Limpa a tela
             printf("A arvore tem %d elementos!", ContElementos(a));  //Usa a funcao para contar quantos elementos existem na arvore e imprime na tela
-            printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
         if(menu == 5){  //Imprime as folhas
             printf("\x1B[2J\x1b[H");
             printf("Folhas da arvore\n"); 
             ImpFolhas(a);  //Usa a funcao vista anteriormente para imprimir todos os nos folha da arvore
-            printf("\n\n1- Voltar ao menu\n6- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
             scanf("%d", &menu);
         }
+        if(menu == 6){
+            printf("\x1B[2J\x1b[H");
+            if(ArvBalanceada(a)>=0){
+                printf("A Arvore está Balanceada!");
+            }else
+                printf("A Arvore não está Balanceada!");
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            scanf("%d", &menu);
+        }
+        if(menu == 7){
+
+        }
+        if(menu == 8){
+            int no;
+            printf("\x1B[2J\x1b[H");
+            printf("Digite o Noh que deseja procurar: ");
+            scanf("%d",&no);
+            printf("\x1B[2J\x1b[H");
+            ImpNivelNo(a,0,no);
+            printf("\n\n1- Voltar ao menu\n9- Sair\n\nDigite Aqui: ");  //Escolhas para voltar ao menu principal de escolha ou fechar o programa
+            scanf("%d", &menu);
+        }
+            
     }
     free(a); //Libera a memoria alocada para "a"
     printf("\x1B[2J\x1b[H"); //Limpa a tela
