@@ -45,16 +45,12 @@ void inserir(char *ArqNome, int matricula, char *nome, char *email){
     FILE *arq = fopen(ArqNome, "r+b");
     Aluno a;
     a.matricula = matricula;
-    for(int i=0;nome[i] != '\0';i++){
-        a.nome[i] = nome[i];
-    }
-    for(int i=0;email[i] != '\0';i++){
-        a.email[i] = email[i];
-    }
+    strcpy(a.nome,nome);
+    strcpy(a.email,email);
     a.disponibilidade=0;
-fseek(arq,pos*sizeof(Aluno), SEEK_SET);
-fwrite(&a,sizeof(Aluno), 1, arq);
-fclose(arq);
+    fseek(arq,pos*sizeof(Aluno), SEEK_SET);
+    fwrite(&a,sizeof(Aluno), 1, arq);
+    fclose(arq);
 }
 
 int AcharAluno(char *ArqNome, int x){
@@ -94,6 +90,7 @@ void ImprimeAluno(char *ArqNome, int x){
 }
 
 void ImprimeTabela(char *ArqNome){
+    
     FILE *arq = fopen(ArqNome, "rb");
     for(int i=0;i<N;i++){
         Aluno a;
@@ -105,7 +102,7 @@ void ImprimeTabela(char *ArqNome){
         printf("%d- Espaco Livre\n\n",i);
        }
     }
-    fclose(arq);
+       fclose(arq);
 }
 
 int main(){
@@ -132,7 +129,9 @@ int main(){
             printf("\nMatricula: ");
             scanf("%d", &matricula);
             printf("\nNome: ");
-            scanf("%s", nome);
+            getchar();
+            fgets(nome,50,stdin);
+            nome[strcspn(nome,"\n")] = 0;
             printf("\nEmail: ");
             scanf("%s", email);
             inserir(arq1,matricula,nome,email);
@@ -152,11 +151,14 @@ int main(){
           scanf("%s", confirm);
         }
         if(op == 3){
-            char confirm[1];
-            printf("\x1B[2J\x1b[H");
+            //char confirm[2];
+            system("cls");
+            system("clear");
+            //printf("\x1B[2J\x1b[H");
             ImprimeTabela(arq1);
             printf("\n\n\nDigite 1 para voltar: ");
-            scanf("%s", confirm);
+            //scanf("%s", confirm);
+            system("PAUSE");
         }
         if(op == 4){
             exit(1);
