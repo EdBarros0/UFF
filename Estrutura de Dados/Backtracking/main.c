@@ -122,9 +122,6 @@ void ImprimirCombinacaoMoeda(int *vet, int pos,int n){
 }
 /////////////////////////////////////////////////////////////////////////////
 int main(){
-    char a[4] = {'a','e','i'};
-    int b[4] = {15,31,55,44};
-    int n;
     while (1)
     {
        clear_screen();
