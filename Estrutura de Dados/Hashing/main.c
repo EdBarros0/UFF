@@ -158,7 +158,7 @@ int main(){
             ImprimeTabela(arq1);
             printf("\n\n\nDigite 1 para voltar: ");
             //scanf("%s", confirm);
-            system("PAUSE");
+            getchar();
         }
         if(op == 4){
             exit(1);
