@@ -52,7 +52,7 @@ int enqueue(Fila q, int x){
 int dequeue(Fila q, int *x){
    // Certifica-se de que a fila não está vazia.
    if(vazia(q) == 1)
-    return 0;
+      return 0;
 
    // Obtém o valor no início da fila.
    *x = q->data[q->first];
