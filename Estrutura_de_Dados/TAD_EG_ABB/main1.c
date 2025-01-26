@@ -20,7 +20,6 @@ int main(){
     scanf("%d",&x);
     remover(&a,x,&x,sizeof(int));
     imprimir(a);
-    exit;
     int y;
     if(buscar(a,6,&y,sizeof(int))==1){  //BUSCANDO O NUMERO 7
         printf("Achou o numero %d\n", y);
