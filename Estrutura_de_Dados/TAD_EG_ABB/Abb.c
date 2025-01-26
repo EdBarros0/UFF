@@ -163,7 +163,7 @@ void ImpNivelArvore(Arvore a, int cont, int n){
 
 
 void imprimir(Arvore a){
-    printf("Em Largura:%d\n", altura(a));
+    printf("Em Largura:\n");
         for(int i=0;i<altura(a);i++){
             ImpNivelArvore(a,0,i);
             printf("\n");

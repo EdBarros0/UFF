@@ -4,21 +4,32 @@
 
 int main(){
     Arvore a = inicializar();
-    for(int i =0;i <= 5;i++){
-        inserir(&a,i,&i,sizeof(int));
+    int x=0;
+    while(1){
+        printf("Digite um numero a ser implementado na arvore(-1 para de adicionar):");
+        scanf("%d",&x);
+        if(x == -1){
+            break;
+        }else{
+            inserir(&a,x,&x,sizeof(int));
+        }
     }
-    int x = 4;
-    inserir(&a,x,&x,sizeof(int));
-    //exit(1);
     imprimir(a);
-    remover(&a,1,&x,sizeof(int));
+    x=0;
+    printf("Digite um numero a ser removido:");
+    scanf("%d",&x);
+    remover(&a,x,&x,sizeof(int));
     imprimir(a);
-    if(buscar(a,7,&x,sizeof(int))==1){
-        printf("Achou o numero %d\n", x);
+    exit;
+    int y;
+    if(buscar(a,6,&y,sizeof(int))==1){  //BUSCANDO O NUMERO 7
+        printf("Achou o numero %d\n", y);
     }else
         printf("O numero buscado nao existe!\n\n");
-    if(existe(a,7)==1){
+    if(existe(a,5)==1){                 //EXISTE O NUMERO 5?
         printf("\n O numero procurado existe\n");
     }else 
         printf("\n O numero procurado nao existe\n");
+
+    destruir(a);
 }
