@@ -80,6 +80,7 @@ void inserir(Arvore* a, int chave, void* objeto, int sizeObj) {
 
 
 
+
 int remover(Arvore* a, int chave,  void *objeto, int sizeObj){
     if(a != NULL)
         if((*a)->item->chave == chave){
