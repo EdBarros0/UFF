@@ -21,7 +21,7 @@ int main(){
     remover(&a,x,&x,sizeof(int));
     imprimir(a);
     int y;
-    if(buscar(a,6,&y,sizeof(int))==1){  //BUSCANDO O NUMERO 7
+    if(buscar(a,6,&y,sizeof(int))==1){  //BUSCANDO O NUMERO 6
         printf("Achou o numero %d\n", y);
     }else
         printf("O numero buscado nao existe!\n\n");
