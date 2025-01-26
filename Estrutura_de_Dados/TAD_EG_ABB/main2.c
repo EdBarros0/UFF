@@ -7,7 +7,6 @@
 typedef struct aluno{
     int matricula;
     char nome[20];
-    //int anoDeIngresso;
 }Aluno;
 
 
